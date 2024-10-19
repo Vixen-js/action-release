@@ -1,0 +1,32 @@
+name: vixen-js/action-release
+description: |
+  Github Action for handling release creation
+author: Atul and Piotr Majkrzak
+branding:
+  icon: box
+  color: green
+inputs:
+  token:
+    description: Github token
+    required: true
+  name:
+    description: Release Name
+    required: true
+  code:
+    description: Release Code
+    required: true
+  body:
+    description: Release information body
+    default: ""
+  prerelease:
+    description: true if is a prerelease
+    default: "false"
+  recreate:
+    description: true if you want to recreate the release
+    default: "false"
+  assets:
+    description: List of assets to upload
+    default: ""
+runs:
+  using: node16
+  main: action.js
