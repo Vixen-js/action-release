@@ -1,7 +1,7 @@
 name: vixen-js/action-release
 description: |
   Github Action for handling release creation
-author: Atul and Piotr Majkrzak
+author: Seobryn
 branding:
   icon: box
   color: green
@@ -28,5 +28,5 @@ inputs:
     description: List of assets to upload
     default: ""
 runs:
-  using: node16
+  using: node20
   main: action.js

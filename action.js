@@ -1,6 +1,7 @@
 require("child_process").execSync("npm install @actions/core @actions/github", {
   cwd: __dirname,
 });
+
 const fs = require("fs");
 const core = require("@actions/core");
 const github = require("@actions/github");
@@ -21,7 +22,7 @@ const main = async () => {
     await deleteReleaseIfExists(code);
   }
 
-  const release = await api.repos.createRelease({
+  const release = await api.rest.repos.createRelease({
     ...github.context.repo,
     tag_name: code,
     target_commitish: github.context.sha,
@@ -33,7 +34,7 @@ const main = async () => {
 
   for (const [source, target, type] of assets) {
     const data = fs.readFileSync(source);
-    api.repos.uploadReleaseAsset({
+    api.rest.repos.uploadReleaseAsset({
       url: release.data.upload_url,
       headers: {
         ["content-type"]: type,
@@ -48,7 +49,7 @@ const main = async () => {
 async function deleteReleaseIfExists(code) {
   let release;
   try {
-    release = await api.repos.getReleaseByTag({
+    release = await api.rest.repos.getReleaseByTag({
       ...github.context.repo,
       tag: code,
     });
@@ -60,13 +61,13 @@ async function deleteReleaseIfExists(code) {
     return;
   }
   const deleteRelease = async () =>
-    api.repos.deleteRelease({
+    api.rest.repos.deleteRelease({
       ...github.context.repo,
       release_id: release.data.id,
     });
 
   const deleteTagRef = async () =>
-    api.git.deleteRef({
+    api.rest.git.deleteRef({
       ...github.context.repo,
       ref: `tags/${code}`,
     });
